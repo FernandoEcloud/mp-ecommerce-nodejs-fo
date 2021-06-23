@@ -11,7 +11,7 @@ module.exports = async function(req, res) {
         res.render('detail', {
             ...req.query,
             mpSecurityView: 'item',
-            mpPreferenceID: preference.id,
+            mpInitPoint: preference.init_point,
             mpPublicKey: process.env.mp_public_key
         })
     } catch (err) {
