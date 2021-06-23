@@ -17,7 +17,7 @@ exports.createPreference = (items, payer, paymentMethods) => {
                 pending: process.env.mp_back_url_pending,
                 failure: process.env.mp_back_url_failure,
             },
-            notification_url: process.env.mp_webhook_url,
+            notification_url: `${process.env.mp_webhook_url}?source_news=webhooks`,
             auto_return: 'approved',
             external_reference: process.env.registration_email,
         }
@@ -61,9 +61,10 @@ exports.getPayment = async(paymentID) => {
     };
 };
 
-exports.handleIpnPaymentRequest = async(idPayment) => {
+exports.handleIpnPaymentRequest = async(paymentID) => {
+
     try {
-        const payment = await this.getPayment(idPayment)
+        const payment = await this.getPayment(paymentID)
 
         let status = payment.status
 
@@ -86,8 +87,9 @@ exports.handleIpnPaymentRequest = async(idPayment) => {
             default:
                 throw new Error("El estado del pago no se encontro.");
         }
-        return new Promise.resolve(200);
+        return Promise.resolve(200);
     } catch (err) {
         return Promise.reject(err);
     }
+
 }

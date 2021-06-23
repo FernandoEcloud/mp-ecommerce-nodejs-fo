@@ -14,7 +14,8 @@ module.exports = async function(req, res) {
             mpSecurityView: '',
             mpPaymentID: payment.id,
             mpExternalReference: payment.external_reference,
-            mpPaymentMethod: payment.payment_method_id
+            mpPaymentMethod: payment.payment_method_id,
+            storeUrl: process.env.store_url
         });
     } catch (err) {
         throw err;

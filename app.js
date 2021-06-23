@@ -1,5 +1,6 @@
 var express = require('express');
 var exphbs = require('express-handlebars');
+var bodyParser = require('body-parser');
 var envValidation = require("./validators/env")
 var errorMiddleware = require("./middleware/error");
 var homeController = require("./controllers/home");
@@ -13,6 +14,9 @@ var asyncMiddleware = require("./middleware/async")
 var port = process.env.PORT || 3000
 
 var app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
