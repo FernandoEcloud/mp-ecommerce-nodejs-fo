@@ -1,11 +1,27 @@
-var paymentPayer = require("../catalogs/payment-payer.json");
 var paymentService = require("../services/payment")
-var paymentHelper = require("../helpers/payment")
 
 module.exports = async function(req, res) {
     try {
         console.log(`WEB HOOK: BODY ${JSON.stringify(req.body)} QUERY ${JSON.stringify(req.query)}`)
+        let query = req.query;
+        if (query.topic && query.id) {
+            const id = query.id;
+            const topic = query.topic;
+            switch (topic) {
+                case "payment":
+                    const response = await paymentService.handleIpnPaymentRequest(id)
+                    return res.sendStatus(response)
+                    break;
+                default:
+                    console.error(`webhook: Undefined notification topic ${type} BODY ${JSON.stringify(body)} QUERY ${JSON.stringify(query)}`);
+                    return res.sendStatus(200);
+                    break;
+            }
+        } else {
+            return res.sendStatus(200);
+        }
     } catch (err) {
-        throw err
+        console.error(err);
+        return res.sendStatus(500);
     }
 }

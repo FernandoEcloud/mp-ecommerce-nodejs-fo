@@ -17,7 +17,7 @@ exports.createPreference = (items, payer, paymentMethods) => {
                 pending: process.env.mp_back_url_pending,
                 failure: process.env.mp_back_url_failure,
             },
-            notification: process.env.mp_webhook_url,
+            notification_url: process.env.mp_webhook_url,
             auto_return: 'approved',
             external_reference: process.env.registration_email,
         }
@@ -60,3 +60,34 @@ exports.getPayment = async(paymentID) => {
         return Promise.reject(err);
     };
 };
+
+exports.handleIpnPaymentRequest = async(idPayment) => {
+    try {
+        const payment = await this.getPayment(idPayment)
+
+        let status = payment.status
+
+        switch (status) {
+            case 'pending':
+                break;
+            case 'in_process':
+                break;
+            case 'approved':
+                console.log('WEBHOOK -----> approved');
+            case 'authorized':
+                break;
+            case 'in_mediation':
+            case 'rejected':
+            case 'cancelled':
+            case 'refunded':
+            case 'charged_back':
+                console.log('WEBHOOK -----> unapproved');
+                break;
+            default:
+                throw new Error("El estado del pago no se encontro.");
+        }
+        return new Promise.resolve(200);
+    } catch (err) {
+        return Promise.reject(err);
+    }
+}
