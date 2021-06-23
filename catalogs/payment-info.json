@@ -1,0 +1,13 @@
+{
+    "paymentDescription": "Dispositivo móvil de Tienda e-commerce",
+    "paymentCategory": "phones",
+    "paymentMethods": {
+        "excluded_payment_methods": [{
+            "id": "amex"
+        }],
+        "excluded_payment_types": [{
+            "id": "atm"
+        }],
+        "installments": 6
+    }
+}
