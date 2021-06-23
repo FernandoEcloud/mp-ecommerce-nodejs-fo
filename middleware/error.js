@@ -4,6 +4,7 @@ module.exports = function(err, req, res, next) {
     console.error(err);
     res.render('error', {
         errorStatusCode: statusCode,
-        errorMsj: message
+        errorMsj: message,
+        storeUrl: process.env.store_url
     })
 }

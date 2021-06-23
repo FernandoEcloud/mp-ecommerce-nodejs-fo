@@ -36,7 +36,24 @@ const doPreference = async(preferenceData) => {
         if (response.status === 200 || response.status === 201) {
             return Promise.resolve(response.response);
         } else {
-            return Promise.reject(new Error("Mercado Pago Bad Status Response"));
+            return Promise.reject(new Error("Error con la respuesta de Mercado Pago"));
+        }
+
+    } catch (err) {
+        return Promise.reject(err);
+    };
+};
+
+exports.getPayment = async(paymentID) => {
+
+    try {
+
+        const response = await mercadopago.payment.get(paymentID);
+
+        if (response.status === 200 || response.status === 201) {
+            return Promise.resolve(response.response);
+        } else {
+            return Promise.reject(new Error("No se encontro el pago o ya fue recibido"));
         }
 
     } catch (err) {
